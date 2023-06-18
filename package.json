@@ -1,12 +1,35 @@
 {
   "name": "poshap_app",
   "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "MIT",
   "main": "node_modules/expo/AppEntry.js",
+  "engines": {
+    "node": "18.16.0",
+    "npm": "9.5.1"
+  },
+  "lint-staged": {
+    "*.{tsx,jsx}": [
+      "npm run format",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\" ",
+    "lint-staged": "lint-staged",
+    "prepare": "husky install",
+    "commit": "cz"
   },
   "dependencies": {
     "expo": "~48.0.18",
@@ -16,8 +39,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
     "@types/react": "~18.0.14",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
     "typescript": "^4.9.4"
-  },
-  "private": true
+  }
 }
