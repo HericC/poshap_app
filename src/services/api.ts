@@ -32,7 +32,7 @@ api.interceptors.response.use(
     const { data } = error.response;
     const message = processMessage(data.message);
     const aletMessage =
-      message === 'Unauthorized' ? 'Falha na autenticação' : message;
+      message === 'Unauthorized' ? 'Autenticação falhou' : message;
 
     Alert.alert('', aletMessage);
     return Promise.reject({ ...data, message });

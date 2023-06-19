@@ -6,7 +6,7 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { LoadingProvider } from './src/contexts/LoadingContext';
 import { AuthProvider } from './src/contexts/AuthContext';
 import Routes from './src/routes';
@@ -19,7 +19,7 @@ export default function App() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <LoadingProvider>
           <AuthProvider>
-            <StatusBar style="auto" />
+            <StatusBar style="light" backgroundColor="#000" />
             <Routes />
           </AuthProvider>
         </LoadingProvider>

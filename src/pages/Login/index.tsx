@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Text,
@@ -11,9 +12,8 @@ import {
 import { AuthContext } from '../../contexts/AuthContext';
 import { LoginDto } from './dto';
 
-import styles from '../../styles';
+import globalStyles from '../../styles';
 const {
-  container,
   img,
   title,
   inputs,
@@ -25,28 +25,26 @@ const {
   btnTextSecondary,
   link,
   linkText,
-} = styles;
+} = globalStyles;
+
+import styles from './styles';
+const { container } = styles;
 
 export default function Login() {
+  const navigation = useNavigation();
+
   const { handleLogin } = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const isValid = () => {
-    let errors = '';
-
-    if (!email) errors += 'E-mail requirido';
-    if (!password) errors += '\nSenha requerido';
-
-    if (errors.length) return Alert.alert('', errors);
-    return true;
-  };
-
   const handleSubmit = () => {
-    if (!isValid()) return;
     const payload: LoginDto = { email, password };
     handleLogin(payload);
+  };
+
+  const toRegister = () => {
+    navigation.navigate('register' as never);
   };
 
   return (
@@ -60,8 +58,13 @@ export default function Login() {
           placeholder="E-mail"
           autoCorrect={false}
           autoCapitalize="none"
+          keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
+          onSubmitEditing={() => {
+            // @ts-ignore
+            this.password.focus();
+          }}
         />
 
         <TextInput
@@ -72,6 +75,10 @@ export default function Login() {
           secureTextEntry={true}
           value={password}
           onChangeText={(text) => setPassword(text)}
+          ref={(input) => {
+            // @ts-ignore
+            this.password = input;
+          }}
         />
 
         <TouchableOpacity style={link}>
@@ -84,7 +91,7 @@ export default function Login() {
           <Text style={btnText}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[btn, btnSecondary]}>
+        <TouchableOpacity style={[btn, btnSecondary]} onPress={toRegister}>
           <Text style={[btnText, btnTextSecondary]}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
