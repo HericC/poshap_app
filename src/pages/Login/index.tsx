@@ -1,21 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../../contexts/AuthContext';
 import { LoginDto } from './dto';
 
+import MainView from '../../components/MainView';
+
 import globalStyles from '../../styles';
 const {
-  img,
-  title,
   inputs,
   input,
   btns,
@@ -26,9 +18,6 @@ const {
   link,
   linkText,
 } = globalStyles;
-
-import styles from './styles';
-const { container } = styles;
 
 export default function Login() {
   const navigation = useNavigation();
@@ -47,11 +36,12 @@ export default function Login() {
     navigation.navigate('register' as never);
   };
 
-  return (
-    <SafeAreaView style={container}>
-      <Image style={img} source={require('../../../assets/logo.png')} />
-      <Text style={title}>Poshap</Text>
+  const toForgotPassword = () => {
+    navigation.navigate('forgot-password' as never);
+  };
 
+  return (
+    <MainView>
       <View style={inputs}>
         <TextInput
           style={input}
@@ -81,7 +71,7 @@ export default function Login() {
           }}
         />
 
-        <TouchableOpacity style={link}>
+        <TouchableOpacity style={link} onPress={toForgotPassword}>
           <Text style={linkText}>Esqueci minha senha</Text>
         </TouchableOpacity>
       </View>
@@ -95,6 +85,6 @@ export default function Login() {
           <Text style={[btnText, btnTextSecondary]}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </MainView>
   );
 }

@@ -1,10 +1,13 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    flexGrow: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 30,
+  },
+  safeAreaView: {
+    alignItems: 'center',
   },
 });

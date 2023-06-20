@@ -1,35 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-} from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
 import { RegisterDto } from './dto';
 
-import globalStyles from '../../styles';
-const {
-  container,
-  img,
-  title,
-  inputs,
-  input,
-  btns,
-  btn,
-  btnText,
-  btnSecondary,
-  btnTextSecondary,
-} = globalStyles;
+import MainView from '../../components/MainView';
 
-import styles from './styles';
-const { scrollContainer } = styles;
+import globalStyles from '../../styles';
+const { inputs, input, btns, btn, btnText, btnSecondary, btnTextSecondary } =
+  globalStyles;
 
 export default function Register() {
   const navigation = useNavigation();
@@ -70,119 +50,114 @@ export default function Register() {
   };
 
   return (
-    <ScrollView style={scrollContainer}>
-      <SafeAreaView style={container}>
-        <Image style={img} source={require('../../../assets/logo.png')} />
-        <Text style={title}>Poshap</Text>
+    <MainView>
+      <View style={inputs}>
+        <TextInput
+          style={input}
+          placeholder="Nome"
+          autoCorrect={false}
+          value={name}
+          onChangeText={(text) => setName(text)}
+          onSubmitEditing={() => {
+            // @ts-ignore
+            this.cpf.focus();
+          }}
+        />
 
-        <View style={inputs}>
-          <TextInput
-            style={input}
-            placeholder="Nome"
-            autoCorrect={false}
-            value={name}
-            onChangeText={(text) => setName(text)}
-            onSubmitEditing={() => {
-              // @ts-ignore
-              this.cpf.focus();
-            }}
-          />
+        <TextInput
+          style={input}
+          placeholder="CPF"
+          autoCorrect={false}
+          keyboardType="number-pad"
+          value={cpf}
+          onChangeText={(text) => setCpf(text)}
+          onSubmitEditing={() => {
+            // @ts-ignore
+            this.phone.focus();
+          }}
+          ref={(input) => {
+            // @ts-ignore
+            this.cpf = input;
+          }}
+        />
 
-          <TextInput
-            style={input}
-            placeholder="CPF"
-            autoCorrect={false}
-            keyboardType="number-pad"
-            value={cpf}
-            onChangeText={(text) => setCpf(text)}
-            onSubmitEditing={() => {
-              // @ts-ignore
-              this.phone.focus();
-            }}
-            ref={(input) => {
-              // @ts-ignore
-              this.cpf = input;
-            }}
-          />
+        <TextInput
+          style={input}
+          placeholder="Telefone"
+          autoCorrect={false}
+          keyboardType="phone-pad"
+          value={phone}
+          onChangeText={(text) => setPhone(text)}
+          onSubmitEditing={() => {
+            // @ts-ignore
+            this.email.focus();
+          }}
+          ref={(input) => {
+            // @ts-ignore
+            this.phone = input;
+          }}
+        />
 
-          <TextInput
-            style={input}
-            placeholder="Telefone"
-            autoCorrect={false}
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={(text) => setPhone(text)}
-            onSubmitEditing={() => {
-              // @ts-ignore
-              this.email.focus();
-            }}
-            ref={(input) => {
-              // @ts-ignore
-              this.phone = input;
-            }}
-          />
+        <TextInput
+          style={input}
+          placeholder="E-mail"
+          autoCorrect={false}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          onSubmitEditing={() => {
+            // @ts-ignore
+            this.password.focus();
+          }}
+          ref={(input) => {
+            // @ts-ignore
+            this.email = input;
+          }}
+        />
 
-          <TextInput
-            style={input}
-            placeholder="E-mail"
-            autoCorrect={false}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            onSubmitEditing={() => {
-              // @ts-ignore
-              this.password.focus();
-            }}
-            ref={(input) => {
-              // @ts-ignore
-              this.email = input;
-            }}
-          />
+        <TextInput
+          style={input}
+          placeholder="Senha"
+          autoCorrect={false}
+          autoCapitalize="none"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          onSubmitEditing={() => {
+            // @ts-ignore
+            this.repeatPassword.focus();
+          }}
+          ref={(input) => {
+            // @ts-ignore
+            this.password = input;
+          }}
+        />
 
-          <TextInput
-            style={input}
-            placeholder="Senha"
-            autoCorrect={false}
-            autoCapitalize="none"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            onSubmitEditing={() => {
-              // @ts-ignore
-              this.repeatPassword.focus();
-            }}
-            ref={(input) => {
-              // @ts-ignore
-              this.password = input;
-            }}
-          />
+        <TextInput
+          style={input}
+          placeholder="Repetir Senha"
+          autoCorrect={false}
+          autoCapitalize="none"
+          secureTextEntry={true}
+          value={repeatPassword}
+          onChangeText={(text) => setRepeatPassword(text)}
+          ref={(input) => {
+            // @ts-ignore
+            this.repeatPassword = input;
+          }}
+        />
+      </View>
 
-          <TextInput
-            style={input}
-            placeholder="Repetir Senha"
-            autoCorrect={false}
-            autoCapitalize="none"
-            secureTextEntry={true}
-            value={repeatPassword}
-            onChangeText={(text) => setRepeatPassword(text)}
-            ref={(input) => {
-              // @ts-ignore
-              this.repeatPassword = input;
-            }}
-          />
-        </View>
+      <View style={btns}>
+        <TouchableOpacity style={btn} onPress={handleSubmit}>
+          <Text style={btnText}>Cadastrar</Text>
+        </TouchableOpacity>
 
-        <View style={btns}>
-          <TouchableOpacity style={btn} onPress={handleSubmit}>
-            <Text style={btnText}>Cadastrar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[btn, btnSecondary]} onPress={toBack}>
-            <Text style={[btnText, btnTextSecondary]}>Voltar</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+        <TouchableOpacity style={[btn, btnSecondary]} onPress={toBack}>
+          <Text style={[btnText, btnTextSecondary]}>Voltar</Text>
+        </TouchableOpacity>
+      </View>
+    </MainView>
   );
 }
