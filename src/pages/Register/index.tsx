@@ -44,7 +44,14 @@ export default function Register() {
   const [repeatPassword, setRepeatPassword] = useState('');
 
   const handleSubmit = async () => {
-    const payload: RegisterDto = { name, cpf, phone, email, password };
+    const payload: RegisterDto = {
+      name,
+      cpf,
+      phone,
+      email,
+      password,
+      repeatPassword,
+    };
 
     try {
       handleLoading(true);

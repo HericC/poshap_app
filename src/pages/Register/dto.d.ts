@@ -4,4 +4,5 @@ export interface RegisterDto {
   email: string;
   phone: string;
   password: string;
+  repeatPassword: string;
 }

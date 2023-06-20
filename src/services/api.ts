@@ -7,7 +7,7 @@ function processMessage(message: string | string[]) {
 }
 
 const api = axios.create({
-  baseURL: 'https://poshap-api-dev.onrender.com',
+  baseURL: 'https://poshap-api-deploy.onrender.com',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
