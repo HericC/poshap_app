@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import { PlansDto, updatePlanDto } from './dto';
-import { ProfileDto } from '../Profile/dto';
-import RadioButton from '../../components/RadioButton';
 
 import MainView from '../../components/MainView';
+import RadioButton from '../../components/RadioButton';
 
 import globalStyles from '../../styles';
 const { btn, btnText } = globalStyles;
@@ -16,8 +16,8 @@ const { header, section, title, note, mt } = styles;
 
 export default function Plans() {
   const { handleLoading } = useContext(LoadingContext);
+  const { authUser } = useContext(AuthContext);
 
-  const [profile, setProfile] = useState({} as ProfileDto);
   const [plans, setPlans] = useState([] as PlansDto[]);
   const [keySelected, setKeySelected] = useState('');
   const [typeSelected, setTypeSelected] = useState('');
@@ -28,26 +28,15 @@ export default function Plans() {
   }, [keySelected]);
 
   useEffect(() => {
-    getProfile();
+    getPlans();
   }, []);
-
-  const getProfile = async () => {
-    try {
-      // handleLoading(true);
-      const { data }: { data: ProfileDto } = await api.get('users');
-      setProfile(data);
-      setKeySelected(data.planKey);
-      getPlans();
-    } catch (error) {
-      console.warn(error);
-      // handleLoading(false);
-    }
-  };
 
   const getPlans = async () => {
     try {
+      // handleLoading(true);
       const { data }: { data: PlansDto[] } = await api.get('users/plans');
       setPlans(data);
+      setKeySelected(authUser?.planKey ?? '');
     } catch (error) {
       console.warn(error);
     } finally {
@@ -81,7 +70,9 @@ export default function Plans() {
 
   return (
     <MainView showLogo={false} center={false}>
-      <Text style={header}>Seu plano atual expira em: {profile.planDate}</Text>
+      <Text style={header}>
+        Seu plano atual expira em: {authUser?.planDate}
+      </Text>
 
       {plans.map((plan) => {
         return (
