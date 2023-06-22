@@ -58,7 +58,7 @@ export default function NewPublish() {
       // handleLoading(true);
       await api.post('services', payload);
       Alert.alert('', 'Publicação realizada');
-      navigation.navigate('home' as never);
+      navigation.navigate('home-routes' as never);
     } catch (error) {
       console.warn(error);
     } finally {
