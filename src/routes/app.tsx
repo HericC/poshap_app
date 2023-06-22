@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 
 import PublishRoutes from './publish';
-import Home from '../pages/Home';
 import ProfileRoutes from './profile';
+import HomeRoutes from './home';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,12 +13,12 @@ export default function AppRoutes() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.navigate('home' as never);
+    navigation.navigate('home-routes' as never);
   }, []);
 
   return (
     <Tab.Navigator
-      initialRouteName="home"
+      initialRouteName="home-routes"
       screenOptions={{
         unmountOnBlur: true,
         headerShown: false,
@@ -40,8 +40,8 @@ export default function AppRoutes() {
       />
 
       <Tab.Screen
-        name="home"
-        component={Home}
+        name="home-routes"
+        component={HomeRoutes}
         options={{
           tabBarIcon: ({ size, color }) => (
             <FontAwesome5 name="home" size={size} color={color} />

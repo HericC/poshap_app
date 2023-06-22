@@ -77,4 +77,27 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#717F7F',
   },
+  list: {
+    alignItems: 'center',
+  },
+  listItem: {
+    width: '80%',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginTop: 10,
+    borderRadius: 4,
+    backgroundColor: '#F1F5F4',
+  },
+  listItemHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  listItemTitle: {
+    fontSize: 22,
+    color: '#717F7F',
+  },
+  listItemText: {
+    fontSize: 20,
+    color: '#A0A0A0',
+  },
 });
