@@ -18,11 +18,11 @@ interface UserDto {
 export const authUserDefault: UserDto | null = null;
 
 function HandleAuth() {
+  const { handleLoading } = useContext(LoadingContext);
+
   const [authLoading, setAuthLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const [authUser, setAuthUser] = useState(authUserDefault);
-
-  const { handleLoading } = useContext(LoadingContext);
 
   useEffect(() => {
     authPersistence();

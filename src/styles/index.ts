@@ -24,7 +24,6 @@ export default StyleSheet.create({
   },
   btns: {
     width: '80%',
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
@@ -35,6 +34,9 @@ export default StyleSheet.create({
     paddingHorizontal: 32,
     backgroundColor: '#295BA8',
     justifyContent: 'center',
+  },
+  btnDangerColor: {
+    backgroundColor: '#A82930',
   },
   btnSecondary: {
     borderWidth: 2,
@@ -58,5 +60,21 @@ export default StyleSheet.create({
     fontSize: 12,
     textDecorationLine: 'underline',
     color: '#5C6262',
+  },
+  texts: {
+    width: '80%',
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 18,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 4,
+    color: '#A0A0A0',
+    backgroundColor: '#F1F5F4',
+  },
+  textTitle: {
+    fontSize: 16,
+    color: '#717F7F',
   },
 });
