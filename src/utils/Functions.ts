@@ -3,6 +3,9 @@ import jwt_decode from 'jwt-decode';
 interface jwtDto {
   sub: string;
   email: string;
+  name: string;
+  planKey: string;
+  planDate: string;
   exp: number;
   iat: number;
 }

@@ -12,6 +12,9 @@ interface authUserDto {
 interface UserDto {
   id: string;
   email: string;
+  name: string;
+  planKey: string;
+  planDate: string;
   access_token: string;
 }
 
@@ -59,10 +62,14 @@ function HandleAuth() {
       );
 
       const tokenDecode = decodeToken(data.access_token);
+      const { sub, email, name, planKey, planDate } = tokenDecode;
 
       const user: UserDto = {
-        id: tokenDecode.sub,
-        email: tokenDecode.email,
+        id: sub,
+        email,
+        name,
+        planKey,
+        planDate,
         access_token: data.access_token,
       };
 

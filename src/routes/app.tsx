@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 
+import PublishRoutes from './publish';
 import Home from '../pages/Home';
 import ProfileRoutes from './profile';
 
@@ -17,6 +18,7 @@ export default function AppRoutes() {
 
   return (
     <Tab.Navigator
+      initialRouteName="home"
       screenOptions={{
         unmountOnBlur: true,
         headerShown: false,
@@ -27,6 +29,16 @@ export default function AppRoutes() {
         tabBarStyle: { backgroundColor: '#295BA8' },
       }}
     >
+      <Tab.Screen
+        name="publish-routes"
+        component={PublishRoutes}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <Entypo name="publish" size={size} color={color} />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="home"
         component={Home}
