@@ -21,20 +21,18 @@ export default function Profile() {
 
   const getProfile = async () => {
     try {
-      handleLoading(true);
+      // handleLoading(true);
       const { data }: { data: ProfileDto } = await api.get('users');
       setProfile(data);
       getCancellationScore(data.id);
     } catch (error) {
       console.warn(error);
-    } finally {
-      handleLoading(false);
+      // handleLoading(false);
     }
   };
 
   const getCancellationScore = async (id: string) => {
     try {
-      handleLoading(true);
       const { data }: { data: CancellationScoreDto } = await api.get(
         `ongoing/cancellationScore/${id}`,
       );
@@ -42,7 +40,7 @@ export default function Profile() {
     } catch (error) {
       console.warn(error);
     } finally {
-      handleLoading(false);
+      // handleLoading(false);
     }
   };
 
@@ -81,7 +79,7 @@ export default function Profile() {
       </View>
 
       <View style={texts}>
-        <Text style={textTitle}>Data do plano:</Text>
+        <Text style={textTitle}>Plano expira em:</Text>
         <Text style={text}>{profile?.planDate}</Text>
       </View>
 

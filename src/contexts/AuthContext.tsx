@@ -13,12 +13,11 @@ const AuthContext = createContext({
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function AuthProvider({ children }: any) {
   const { authLoading, authenticated, authUser, handleLogin, handleLogout } =
     HandleAuth();
 
-  if (!authLoading) return <></>;
+  if (authLoading) return <></>;
 
   return (
     <AuthContext.Provider

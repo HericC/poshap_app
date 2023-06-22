@@ -4,15 +4,17 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 
 import Profile from '../pages/Profile';
+import Plans from '../pages/Plans';
+
+const Drawer = createDrawerNavigator();
 
 export default function ProfileRoutes() {
-  const Drawer = createDrawerNavigator();
-
   const { handleLogout } = useContext(AuthContext);
 
   return (
     <Drawer.Navigator
       screenOptions={{
+        unmountOnBlur: true,
         headerTintColor: '#fff',
         headerStyle: { backgroundColor: '#295BA8' },
       }}
@@ -21,6 +23,12 @@ export default function ProfileRoutes() {
         name="profile"
         component={Profile}
         options={{ title: 'Perfil' }}
+      />
+
+      <Drawer.Screen
+        name="plans"
+        component={Plans}
+        options={{ title: 'Planos' }}
       />
 
       <Drawer.Screen

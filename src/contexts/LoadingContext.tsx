@@ -9,7 +9,6 @@ const LoadingContext = createContext({
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function LoadingProvider({ children }: any) {
   const { loading, handleLoading } = HandleLoading();
 

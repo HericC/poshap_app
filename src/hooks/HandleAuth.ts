@@ -20,7 +20,7 @@ export const authUserDefault: UserDto | null = null;
 function HandleAuth() {
   const { handleLoading } = useContext(LoadingContext);
 
-  const [authLoading, setAuthLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [authUser, setAuthUser] = useState(authUserDefault);
 
@@ -46,7 +46,7 @@ function HandleAuth() {
       setAuthUser(authUser);
     }
 
-    setAuthLoading(true);
+    setAuthLoading(false);
   };
 
   const handleLogin = async (loginDto: LoginDto) => {

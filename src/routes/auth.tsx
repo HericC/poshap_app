@@ -7,9 +7,9 @@ import ForgotPassword from '../pages/ForgotPassword';
 import ValidateOtgCode from '../pages/ForgotPassword/components/ValidateOtgCode';
 import NewPassword from '../pages/ForgotPassword/components/NewPassword';
 
-export default function AuthRoutes() {
-  const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
+export default function AuthRoutes() {
   return (
     <Stack.Navigator>
       <Stack.Screen

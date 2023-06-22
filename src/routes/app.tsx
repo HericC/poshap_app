@@ -6,8 +6,9 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Home from '../pages/Home';
 import ProfileRoutes from './profile';
 
+const Tab = createBottomTabNavigator();
+
 export default function AppRoutes() {
-  const Tab = createBottomTabNavigator();
   const navigation = useNavigation();
 
   useEffect(() => {
