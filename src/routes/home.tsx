@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Home from '../pages/Home';
 import OrderClient from '../pages/OrderClient';
+import OrderProvider from '../pages/OrderProvider';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,6 +26,12 @@ export default function HomeRoutes() {
         name="order-client"
         component={OrderClient}
         options={{ title: 'Minhas solicitações' }}
+      />
+
+      <Drawer.Screen
+        name="order-provider"
+        component={OrderProvider}
+        options={{ title: 'Solicitações recebidas' }}
       />
     </Drawer.Navigator>
   );

@@ -36,3 +36,7 @@ export interface OrderDto {
     };
   };
 }
+
+export interface OngoingDto {
+  orderId: string;
+}
