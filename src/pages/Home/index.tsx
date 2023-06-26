@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -7,6 +7,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import api from '../../services/api';
+import { LoadingContext } from '../../contexts/LoadingContext';
 import { ServicesDto } from './dto';
 
 import Filter from './components/Filter';
@@ -21,12 +22,15 @@ const {
   listItemText,
   link,
   linkText,
+  title,
 } = globalStyles;
 
 import styles from './styles';
 const { safeAreaView } = styles;
 
 export default function Home() {
+  const { handleLoading } = useContext(LoadingContext);
+
   const [services, setServices] = useState([] as ServicesDto[]);
   const [categories, setCategories] = useState([] as string[]);
 
@@ -71,39 +75,50 @@ export default function Home() {
 
   return (
     <SafeAreaView style={safeAreaView}>
-      <TouchableOpacity
-        style={[link, { marginVertical: 6 }]}
-        onPress={() => setShowFilter(!showFilter)}
-      >
-        <Text style={[linkText, { fontSize: 20 }]}>Filtros</Text>
-      </TouchableOpacity>
+      {services.length ? (
+        <>
+          <TouchableOpacity
+            style={[link, { marginVertical: 6 }]}
+            onPress={() => setShowFilter(!showFilter)}
+          >
+            <Text style={[linkText, { fontSize: 20 }]}>Filtros</Text>
+          </TouchableOpacity>
 
-      <Filter
-        showFilter={showFilter}
-        setShowFilter={setShowFilter}
-        categories={categories}
-        setFilterPayload={setFilterPayload}
-      />
+          <Filter
+            showFilter={showFilter}
+            setShowFilter={setShowFilter}
+            categories={categories}
+            setFilterPayload={setFilterPayload}
+          />
 
-      <FlatList
-        data={services}
-        renderItem={({ item }) => (
-          <View style={list}>
-            <TouchableOpacity
-              style={listItem}
-              onPress={() => setServiceCardId(item.id)}
-            >
-              <View style={listItemHeader}>
-                <Text style={listItemTitle}>{item.category}</Text>
-                <Text style={listItemText}>R$ {item.price}</Text>
+          <FlatList
+            data={services}
+            renderItem={({ item }) => (
+              <View style={list}>
+                <TouchableOpacity
+                  style={listItem}
+                  onPress={() => setServiceCardId(item.id)}
+                >
+                  <View style={listItemHeader}>
+                    <Text style={listItemTitle}>{item.category}</Text>
+                    <Text style={listItemText}>R$ {item.price}</Text>
+                  </View>
+                  <Text style={listItemText}>{item.description}</Text>
+                </TouchableOpacity>
               </View>
-              <Text style={listItemText}>{item.description}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+            )}
+          />
 
-      <ServiceCard serviceId={serviceCardId} setServiceId={setServiceCardId} />
+          <ServiceCard
+            serviceId={serviceCardId}
+            setServiceId={setServiceCardId}
+          />
+        </>
+      ) : (
+        <View style={list}>
+          <Text style={title}>Lista vazia</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

@@ -9,11 +9,14 @@ import {
   Modal,
   Alert,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import api from '../../../../services/api';
 import { LoadingContext } from '../../../../contexts/LoadingContext';
 import { OrderDto, ServiceDto } from './dto';
 import { CancellationScoreDto } from '../../../Profile/dto';
+
+import RadioButton from '../../../../components/RadioButton';
 
 import globalStyles from '../../../../styles';
 const {
@@ -30,8 +33,7 @@ const {
 } = globalStyles;
 
 import styles from './styles';
-import RadioButton from '../../../../components/RadioButton';
-const { modal, container } = styles;
+const { scrollModal, modal, container } = styles;
 
 export default function ServiceCard({ serviceId, setServiceId }: any) {
   const { handleLoading } = useContext(LoadingContext);
@@ -54,7 +56,7 @@ export default function ServiceCard({ serviceId, setServiceId }: any) {
 
   const handleSubmit = async () => {
     const payload: OrderDto = {
-      serviceId: serviceId,
+      serviceId,
       schedulingDate: scheduling ? schedulingDate : undefined,
     };
 
@@ -118,100 +120,104 @@ export default function ServiceCard({ serviceId, setServiceId }: any) {
 
   return (
     <Modal animationType="fade" visible={!!serviceId} transparent={true}>
-      <View style={modal}>
-        <View style={container}>
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Nome:</Text>
-            <Text style={text}>{service?.provider?.name}</Text>
-          </View>
-
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Telefone:</Text>
-            <Text style={text}>{service?.provider?.phone}</Text>
-          </View>
-
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Categoria:</Text>
-            <Text style={text}>{service?.category}</Text>
-          </View>
-
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Preço:</Text>
-            <Text style={text}>R$ {service?.price}</Text>
-          </View>
-
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Descrição:</Text>
-            <Text style={text}>{service?.description}</Text>
-          </View>
-
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Avaliações do prestador:</Text>
-            <Text style={text}>
-              {service?.provider?.ratings.providerRating}
-            </Text>
-          </View>
-
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Avaliações dos serviços:</Text>
-            <Text style={text}>{service?.provider?.ratings.serviceRating}</Text>
-          </View>
-
-          <View style={[texts, { marginBottom: 10 }]}>
-            <Text style={textTitle}>Taxa de serviços cancelados:</Text>
-            <Text style={text}>{canceledServiceFee()}</Text>
-          </View>
-
-          {service?.scheduling && (
-            <RadioButton
-              small={true}
-              active={scheduling}
-              callback={() => setScheduling(!scheduling)}
-            >
-              <Text>Agendar</Text>
-            </RadioButton>
-          )}
-
-          {scheduling && (
-            <View style={[inputs, { marginVertical: 0 }]}>
-              <View>
-                <TouchableOpacity onPress={() => setShowDateTimePicker(true)}>
-                  <TextInput
-                    style={input}
-                    value={schedulingDate.toLocaleDateString()}
-                    editable={false}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <View>
-                {showDateTimePicker && (
-                  <DateTimePicker
-                    value={schedulingDate}
-                    minimumDate={tomorrow}
-                    onChange={(event: DateTimePickerEvent, date?: Date) => {
-                      setShowDateTimePicker(false);
-                      setSchedulingDate(date ?? tomorrow);
-                    }}
-                  />
-                )}
-              </View>
+      <ScrollView style={scrollModal}>
+        <View style={modal}>
+          <View style={container}>
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Nome:</Text>
+              <Text style={text}>{service?.provider?.name}</Text>
             </View>
-          )}
 
-          <View style={[btns, { marginTop: 10 }]}>
-            <TouchableOpacity style={btn} onPress={() => handleSubmit()}>
-              <Text style={btnText}>
-                {scheduling ? 'Agendar' : 'Solicitar'}
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Telefone:</Text>
+              <Text style={text}>{service?.provider?.phone}</Text>
+            </View>
+
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Categoria:</Text>
+              <Text style={text}>{service?.category}</Text>
+            </View>
+
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Média de preço:</Text>
+              <Text style={text}>R$ {service?.price}</Text>
+            </View>
+
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Descrição:</Text>
+              <Text style={text}>{service?.description}</Text>
+            </View>
+
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Avaliações do prestador:</Text>
+              <Text style={text}>
+                {service?.provider?.ratings?.providerRating}
               </Text>
-            </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity style={[btn, btnSecondary]} onPress={close}>
-              <Text style={[btnText, btnTextSecondary]}>Fechar</Text>
-            </TouchableOpacity>
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Avaliações dos serviços:</Text>
+              <Text style={text}>
+                {service?.provider?.ratings?.serviceRating}
+              </Text>
+            </View>
+
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>Taxa de serviços cancelados:</Text>
+              <Text style={text}>{canceledServiceFee()}</Text>
+            </View>
+
+            {service?.scheduling && (
+              <RadioButton
+                small={true}
+                active={scheduling}
+                callback={() => setScheduling(!scheduling)}
+              >
+                <Text>Agendar</Text>
+              </RadioButton>
+            )}
+
+            {scheduling && (
+              <View style={[inputs, { marginVertical: 0 }]}>
+                <View>
+                  <TouchableOpacity onPress={() => setShowDateTimePicker(true)}>
+                    <TextInput
+                      style={input}
+                      value={schedulingDate.toLocaleDateString()}
+                      editable={false}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <View>
+                  {showDateTimePicker && (
+                    <DateTimePicker
+                      value={schedulingDate}
+                      minimumDate={tomorrow}
+                      onChange={(event: DateTimePickerEvent, date?: Date) => {
+                        setShowDateTimePicker(false);
+                        setSchedulingDate(date ?? tomorrow);
+                      }}
+                    />
+                  )}
+                </View>
+              </View>
+            )}
+
+            <View style={[btns, { marginTop: 10 }]}>
+              <TouchableOpacity style={btn} onPress={() => handleSubmit()}>
+                <Text style={btnText}>
+                  {scheduling ? 'Agendar' : 'Solicitar'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[btn, btnSecondary]} onPress={close}>
+                <Text style={[btnText, btnTextSecondary]}>Fechar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 }

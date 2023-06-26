@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  scrollModal: {
+    flexGrow: 1,
+  },
   modal: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    marginVertical: 20,
   },
   container: {
     width: '90%',

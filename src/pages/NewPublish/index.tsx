@@ -115,7 +115,7 @@ export default function NewPublish() {
 
         <TextInput
           style={input}
-          placeholder="Preço estimado da hora"
+          placeholder="Média de preço"
           keyboardType="number-pad"
           value={price}
           onChangeText={(text) => setPrice(text)}
