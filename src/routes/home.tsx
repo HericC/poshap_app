@@ -2,6 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Home from '../pages/Home';
+import OrderClient from '../pages/OrderClient';
 
 const Drawer = createDrawerNavigator();
 
@@ -18,6 +19,12 @@ export default function HomeRoutes() {
         name="home"
         component={Home}
         options={{ title: 'Home - Anúncios de serviços' }}
+      />
+
+      <Drawer.Screen
+        name="order-client"
+        component={OrderClient}
+        options={{ title: 'Minhas solicitações' }}
       />
     </Drawer.Navigator>
   );
