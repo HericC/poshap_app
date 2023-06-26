@@ -22,3 +22,8 @@ export interface ServiceDto {
     };
   };
 }
+
+export interface OrderDto {
+  serviceId: string;
+  schedulingDate?: Date;
+}

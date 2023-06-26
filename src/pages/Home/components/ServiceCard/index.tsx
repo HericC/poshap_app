@@ -1,25 +1,77 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, Modal } from 'react-native';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  Alert,
+  TextInput,
+} from 'react-native';
 import api from '../../../../services/api';
 import { LoadingContext } from '../../../../contexts/LoadingContext';
-import { ServiceDto } from './dto';
+import { OrderDto, ServiceDto } from './dto';
 import { CancellationScoreDto } from '../../../Profile/dto';
 
 import globalStyles from '../../../../styles';
-const { link, linkText, texts, textTitle, text } = globalStyles;
+const {
+  texts,
+  textTitle,
+  text,
+  btns,
+  btn,
+  btnText,
+  btnSecondary,
+  btnTextSecondary,
+  inputs,
+  input,
+} = globalStyles;
 
 import styles from './styles';
+import RadioButton from '../../../../components/RadioButton';
 const { modal, container } = styles;
 
 export default function ServiceCard({ serviceId, setServiceId }: any) {
   const { handleLoading } = useContext(LoadingContext);
 
+  const tomorrow = useMemo(() => {
+    let date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date;
+  }, []);
+
   const [service, setService] = useState({} as ServiceDto);
   const [cancellationScore, setCancellationScore] = useState(0);
+  const [scheduling, setScheduling] = useState(false);
+  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+  const [schedulingDate, setSchedulingDate] = useState(tomorrow);
 
   useEffect(() => {
     if (serviceId) getService();
   }, [serviceId]);
+
+  const handleSubmit = async () => {
+    const payload: OrderDto = {
+      serviceId: serviceId,
+      schedulingDate: scheduling ? schedulingDate : undefined,
+    };
+
+    try {
+      // handleLoading(true);
+      await api.post('orders', payload);
+      const msg = scheduling
+        ? 'Solicitação de agendamento enviada'
+        : 'Solicitação enviada';
+      Alert.alert('', msg);
+      close();
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      // handleLoading(false);
+    }
+  };
 
   const getService = async () => {
     try {
@@ -59,59 +111,104 @@ export default function ServiceCard({ serviceId, setServiceId }: any) {
   const close = () => {
     setServiceId('');
     setService({} as any);
+    setScheduling(false);
+    setShowDateTimePicker(false);
+    setSchedulingDate(tomorrow);
   };
 
   return (
     <Modal animationType="fade" visible={!!serviceId} transparent={true}>
       <View style={modal}>
         <View style={container}>
-          <TouchableOpacity
-            style={[link, { marginTop: 6 }]}
-            onPress={() => close()}
-          >
-            <Text style={[linkText, { fontSize: 20 }]}>Fechar</Text>
-          </TouchableOpacity>
-
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Nome:</Text>
             <Text style={text}>{service?.provider?.name}</Text>
           </View>
 
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Telefone:</Text>
             <Text style={text}>{service?.provider?.phone}</Text>
           </View>
 
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Categoria:</Text>
             <Text style={text}>{service?.category}</Text>
           </View>
 
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Preço:</Text>
             <Text style={text}>R$ {service?.price}</Text>
           </View>
 
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Descrição:</Text>
             <Text style={text}>{service?.description}</Text>
           </View>
 
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Avaliações do prestador:</Text>
             <Text style={text}>
               {service?.provider?.ratings.providerRating}
             </Text>
           </View>
 
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Avaliações dos serviços:</Text>
             <Text style={text}>{service?.provider?.ratings.serviceRating}</Text>
           </View>
 
-          <View style={texts}>
+          <View style={[texts, { marginBottom: 10 }]}>
             <Text style={textTitle}>Taxa de serviços cancelados:</Text>
             <Text style={text}>{canceledServiceFee()}</Text>
+          </View>
+
+          {service?.scheduling && (
+            <RadioButton
+              small={true}
+              active={scheduling}
+              callback={() => setScheduling(!scheduling)}
+            >
+              <Text>Agendar</Text>
+            </RadioButton>
+          )}
+
+          {scheduling && (
+            <View style={[inputs, { marginVertical: 0 }]}>
+              <View>
+                <TouchableOpacity onPress={() => setShowDateTimePicker(true)}>
+                  <TextInput
+                    style={input}
+                    value={schedulingDate.toLocaleDateString()}
+                    editable={false}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <View>
+                {showDateTimePicker && (
+                  <DateTimePicker
+                    value={schedulingDate}
+                    minimumDate={tomorrow}
+                    onChange={(event: DateTimePickerEvent, date?: Date) => {
+                      setShowDateTimePicker(false);
+                      setSchedulingDate(date ?? tomorrow);
+                    }}
+                  />
+                )}
+              </View>
+            </View>
+          )}
+
+          <View style={[btns, { marginTop: 10 }]}>
+            <TouchableOpacity style={btn} onPress={() => handleSubmit()}>
+              <Text style={btnText}>
+                {scheduling ? 'Agendar' : 'Solicitar'}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[btn, btnSecondary]} onPress={close}>
+              <Text style={[btnText, btnTextSecondary]}>Fechar</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
