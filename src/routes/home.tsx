@@ -14,7 +14,11 @@ export default function HomeRoutes() {
         headerStyle: { backgroundColor: '#295BA8' },
       }}
     >
-      <Drawer.Screen name="home" component={Home} options={{ title: 'Home' }} />
+      <Drawer.Screen
+        name="home"
+        component={Home}
+        options={{ title: 'Home - Anúncios de serviços' }}
+      />
     </Drawer.Navigator>
   );
 }

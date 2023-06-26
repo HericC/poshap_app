@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Slider from '@react-native-community/slider';
-import { Picker } from '@react-native-picker/picker';
 import {
   Text,
   View,
   TouchableOpacity,
   FlatList,
   SafeAreaView,
-  TextInput,
 } from 'react-native';
 import api from '../../services/api';
 import { ServicesDto } from './dto';
+
+import Filter from './components/Filter';
 
 import globalStyles from '../../styles';
 const {
@@ -19,8 +18,8 @@ const {
   listItemHeader,
   listItemTitle,
   listItemText,
-  inputs,
-  input,
+  link,
+  linkText,
 } = globalStyles;
 
 import styles from './styles';
@@ -30,10 +29,8 @@ export default function Home() {
   const [services, setServices] = useState([] as ServicesDto[]);
   const [categories, setCategories] = useState([] as string[]);
 
-  const [searchEditing, setSearchEditing] = useState('');
-  const [search, setSearch] = useState('');
-  const [price, setPrice] = useState(250);
-  const [category, setCategory] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
+  const [filterPayload, setFilterPayload] = useState({});
 
   useEffect(() => {
     getCategories();
@@ -41,7 +38,7 @@ export default function Home() {
 
   useEffect(() => {
     getServices();
-  }, [search, category]);
+  }, [filterPayload]);
 
   const getCategories = async () => {
     try {
@@ -58,14 +55,8 @@ export default function Home() {
   const getServices = async () => {
     try {
       // handleLoading(true);
-      const payload: any = {
-        search,
-        minPrice: 0,
-        maxPrice: price,
-        categories: category || undefined,
-      };
       const { data }: { data: ServicesDto[] } = await api.get('services', {
-        params: payload,
+        params: filterPayload,
       });
       setServices(data);
     } catch (error) {
@@ -77,44 +68,19 @@ export default function Home() {
 
   return (
     <SafeAreaView style={safeAreaView}>
-      <View style={list}>
-        <View style={inputs}>
-          <TextInput
-            style={input}
-            placeholder="Pesquisar"
-            value={searchEditing}
-            onChangeText={(text) => setSearchEditing(text)}
-            onSubmitEditing={() => setSearch(searchEditing)}
-          />
+      <TouchableOpacity
+        style={[link, { marginTop: 6 }]}
+        onPress={() => setShowFilter(!showFilter)}
+      >
+        <Text style={[linkText, { fontSize: 20 }]}>Filtros</Text>
+      </TouchableOpacity>
 
-          <Slider
-            minimumValue={0}
-            maximumValue={500}
-            value={price}
-            thumbTintColor="#295BA8"
-            minimumTrackTintColor="#295BA8"
-            maximumTrackTintColor="#A82930"
-            onValueChange={(value) => setPrice(value)}
-          />
-          <Text style={listItemText}>{price.toFixed()}</Text>
-
-          <View style={input}>
-            <Picker
-              selectedValue={category}
-              onValueChange={(item) => setCategory(item)}
-            >
-              <Picker.Item label="Selecione a categoria" value="" />
-              {categories.map((category, index) => (
-                <Picker.Item
-                  key={category + index}
-                  label={category}
-                  value={category}
-                />
-              ))}
-            </Picker>
-          </View>
-        </View>
-      </View>
+      <Filter
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
+        categories={categories}
+        setFilterPayload={setFilterPayload}
+      />
 
       <FlatList
         data={services}

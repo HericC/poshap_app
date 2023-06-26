@@ -100,4 +100,23 @@ export default StyleSheet.create({
     fontSize: 20,
     color: '#A0A0A0',
   },
+  multiSlider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  filter: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#717F7F',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  modal: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
 });
