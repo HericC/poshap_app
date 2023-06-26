@@ -71,7 +71,8 @@ export default function Plans() {
   return (
     <MainView showLogo={false} center={false}>
       <Text style={header}>
-        Seu plano atual expira em: {authUser?.planDate}
+        Seu plano atual expira em:{' '}
+        {new Date(authUser?.planDate ?? '').toLocaleDateString()}
       </Text>
 
       {plans.map((plan) => {

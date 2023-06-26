@@ -80,7 +80,9 @@ export default function Profile() {
 
       <View style={texts}>
         <Text style={textTitle}>Plano expira em:</Text>
-        <Text style={text}>{profile?.planDate}</Text>
+        <Text style={text}>
+          {new Date(profile?.planDate ?? '').toLocaleDateString()}
+        </Text>
       </View>
 
       <View style={texts}>
