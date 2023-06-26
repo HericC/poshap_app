@@ -30,6 +30,7 @@ const {
   btnTextSecondary,
   inputs,
   input,
+  title,
 } = globalStyles;
 
 import styles from './styles';
@@ -123,28 +124,30 @@ export default function ServiceCard({ serviceId, setServiceId }: any) {
       <ScrollView style={scrollModal}>
         <View style={modal}>
           <View style={container}>
+            <Text style={title}>Serviço</Text>
+
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Nome:</Text>
+              <Text style={textTitle}>Nome do prestador:</Text>
               <Text style={text}>{service?.provider?.name}</Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Telefone:</Text>
+              <Text style={textTitle}>Telefone do prestador:</Text>
               <Text style={text}>{service?.provider?.phone}</Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Categoria:</Text>
+              <Text style={textTitle}>Categoria do serviço:</Text>
               <Text style={text}>{service?.category}</Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Média de preço:</Text>
+              <Text style={textTitle}>Média de preço do serviço:</Text>
               <Text style={text}>R$ {service?.price}</Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Descrição:</Text>
+              <Text style={textTitle}>Descrição do serviço:</Text>
               <Text style={text}>{service?.description}</Text>
             </View>
 
