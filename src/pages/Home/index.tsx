@@ -10,6 +10,7 @@ import api from '../../services/api';
 import { ServicesDto } from './dto';
 
 import Filter from './components/Filter';
+import ServiceCard from './components/ServiceCard';
 
 import globalStyles from '../../styles';
 const {
@@ -31,6 +32,8 @@ export default function Home() {
 
   const [showFilter, setShowFilter] = useState(false);
   const [filterPayload, setFilterPayload] = useState({});
+
+  const [serviceCardId, setServiceCardId] = useState('');
 
   useEffect(() => {
     getCategories();
@@ -69,7 +72,7 @@ export default function Home() {
   return (
     <SafeAreaView style={safeAreaView}>
       <TouchableOpacity
-        style={[link, { marginTop: 6 }]}
+        style={[link, { marginVertical: 6 }]}
         onPress={() => setShowFilter(!showFilter)}
       >
         <Text style={[linkText, { fontSize: 20 }]}>Filtros</Text>
@@ -86,7 +89,10 @@ export default function Home() {
         data={services}
         renderItem={({ item }) => (
           <View style={list}>
-            <TouchableOpacity style={listItem}>
+            <TouchableOpacity
+              style={listItem}
+              onPress={() => setServiceCardId(item.id)}
+            >
               <View style={listItemHeader}>
                 <Text style={listItemTitle}>{item.category}</Text>
                 <Text style={listItemText}>R$ {item.price}</Text>
@@ -96,6 +102,8 @@ export default function Home() {
           </View>
         )}
       />
+
+      <ServiceCard serviceId={serviceCardId} setServiceId={setServiceCardId} />
     </SafeAreaView>
   );
 }

@@ -12,7 +12,7 @@ const {
   filter,
   link,
   linkText,
-  modal,
+  modalFilter,
   textTitle,
 } = globalStyles;
 
@@ -45,7 +45,7 @@ export default function Filter({
 
   return (
     <Modal animationType="slide" visible={showFilter} transparent={true}>
-      <View style={modal}>
+      <View style={modalFilter}>
         <View style={filter}>
           <TouchableOpacity
             style={[link, { marginTop: 6 }]}
@@ -88,7 +88,7 @@ export default function Filter({
                   <MultiSlider
                     values={[minPrice, maxPrice]}
                     max={300}
-                    sliderLength={220}
+                    sliderLength={180}
                     onValuesChange={(value) => {
                       setMinPrice(value[0]);
                       setMaxPrice(value[1]);

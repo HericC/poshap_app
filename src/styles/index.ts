@@ -114,7 +114,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-  modal: {
+  modalFilter: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
