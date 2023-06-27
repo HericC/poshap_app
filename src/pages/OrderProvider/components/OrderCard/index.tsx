@@ -10,6 +10,7 @@ import {
 import api from '../../../../services/api';
 import { LoadingContext } from '../../../../contexts/LoadingContext';
 import { OngoingDto, OrderDto } from './dto';
+import { CancellationScoreDto } from '../../../Profile/dto';
 
 import globalStyles from '../../../../styles';
 const {
@@ -32,6 +33,7 @@ export default function OrderCard({ orderId, setOrderId, getOrders }: any) {
   const { handleLoading } = useContext(LoadingContext);
 
   const [order, setOrder] = useState({} as OrderDto);
+  const [cancellationScore, setCancellationScore] = useState(0);
 
   useEffect(() => {
     if (orderId) getOrder();
@@ -61,6 +63,7 @@ export default function OrderCard({ orderId, setOrderId, getOrders }: any) {
       // handleLoading(true);
       const { data }: { data: OrderDto } = await api.get(`orders/${orderId}`);
       setOrder(data);
+      getCancellationScore(data.clientId);
     } catch (error) {
       console.warn(error);
     } finally {
@@ -68,9 +71,30 @@ export default function OrderCard({ orderId, setOrderId, getOrders }: any) {
     }
   };
 
+  const getCancellationScore = async (id: string) => {
+    try {
+      const { data }: { data: CancellationScoreDto } = await api.get(
+        `ongoing/cancellationScore/${id}`,
+      );
+      setCancellationScore(data.score);
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      // handleLoading(false);
+    }
+  };
+
+  const canceledServiceFee = () => {
+    if (cancellationScore > 100) return 'Alta';
+    if (cancellationScore > 50) return 'Média';
+    if (cancellationScore > 0) return 'Baixa';
+    return 'Não possui cancelamentos';
+  };
+
   const close = () => {
     setOrderId('');
     setOrder({} as any);
+    setCancellationScore(0);
   };
 
   return (
@@ -110,6 +134,13 @@ export default function OrderCard({ orderId, setOrderId, getOrders }: any) {
             <View style={[texts, { marginBottom: 10 }]}>
               <Text style={textTitle}>Avaliações do cliente:</Text>
               <Text style={text}>{order?.client?.ratings?.clientRating}</Text>
+            </View>
+
+            <View style={[texts, { marginBottom: 10 }]}>
+              <Text style={textTitle}>
+                Taxa de serviços cancelados do cliente:
+              </Text>
+              <Text style={text}>{canceledServiceFee()}</Text>
             </View>
 
             {order?.scheduledDate && (

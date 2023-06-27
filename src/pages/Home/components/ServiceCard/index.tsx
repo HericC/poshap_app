@@ -114,6 +114,7 @@ export default function ServiceCard({ serviceId, setServiceId }: any) {
   const close = () => {
     setServiceId('');
     setService({} as any);
+    setCancellationScore(0);
     setScheduling(false);
     setShowDateTimePicker(false);
     setSchedulingDate(tomorrow);
