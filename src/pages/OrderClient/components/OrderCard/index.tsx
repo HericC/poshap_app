@@ -125,16 +125,18 @@ export default function OrderCard({ orderId, setOrderId, getOrders }: any) {
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Avaliações do prestador:</Text>
+              <Text style={textTitle}>Média das avaliações do prestador:</Text>
               <Text style={text}>
-                {order?.provider?.ratings?.providerRating}
+                {order?.provider?.ratings?.providerRating ??
+                  'Não possui avaliações'}
               </Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Avaliações dos serviços:</Text>
+              <Text style={textTitle}>Média das avaliações dos serviços:</Text>
               <Text style={text}>
-                {order?.provider?.ratings?.serviceRating}
+                {order?.provider?.ratings?.serviceRating ??
+                  'Não possui avaliações'}
               </Text>
             </View>
 

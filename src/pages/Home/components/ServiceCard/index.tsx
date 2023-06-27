@@ -153,16 +153,18 @@ export default function ServiceCard({ serviceId, setServiceId }: any) {
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Avaliações do prestador:</Text>
+              <Text style={textTitle}>Média das avaliações do prestador:</Text>
               <Text style={text}>
-                {service?.provider?.ratings?.providerRating}
+                {service?.provider?.ratings?.providerRating ??
+                  'Não possui avaliações'}
               </Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Avaliações dos serviços:</Text>
+              <Text style={textTitle}>Média das avaliações dos serviços:</Text>
               <Text style={text}>
-                {service?.provider?.ratings?.serviceRating}
+                {service?.provider?.ratings?.serviceRating ??
+                  'Não possui avaliações'}
               </Text>
             </View>
 

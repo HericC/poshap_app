@@ -146,8 +146,11 @@ export default function OngoingCard({
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Avaliações do cliente:</Text>
-              <Text style={text}>{ongoing?.client?.ratings?.clientRating}</Text>
+              <Text style={textTitle}>Média das avaliações do cliente:</Text>
+              <Text style={text}>
+                {ongoing?.client?.ratings?.clientRating ??
+                  'Não possui avaliações'}
+              </Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>

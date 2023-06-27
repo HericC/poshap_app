@@ -91,18 +91,24 @@ export default function Profile() {
       </View>
 
       <View style={texts}>
-        <Text style={textTitle}>Avaliações como cliente:</Text>
-        <Text style={text}>{profile?.ratings?.clientRating}</Text>
+        <Text style={textTitle}>Média das avaliações como cliente:</Text>
+        <Text style={text}>
+          {profile?.ratings?.clientRating ?? 'Não possui avaliações'}
+        </Text>
       </View>
 
       <View style={texts}>
-        <Text style={textTitle}>Avaliações como prestador:</Text>
-        <Text style={text}>{profile?.ratings?.providerRating}</Text>
+        <Text style={textTitle}>Média das avaliações como prestador:</Text>
+        <Text style={text}>
+          {profile?.ratings?.providerRating ?? 'Não possui avaliações'}
+        </Text>
       </View>
 
       <View style={texts}>
-        <Text style={textTitle}>Avaliações dos serviços:</Text>
-        <Text style={text}>{profile?.ratings?.serviceRating}</Text>
+        <Text style={textTitle}>Média das avaliações dos serviços:</Text>
+        <Text style={text}>
+          {profile?.ratings?.serviceRating ?? 'Não possui avaliações'}
+        </Text>
       </View>
 
       <View style={texts}>

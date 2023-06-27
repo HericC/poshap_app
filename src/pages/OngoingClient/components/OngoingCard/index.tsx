@@ -143,16 +143,18 @@ export default function OngoingCard({
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Avaliações do prestador:</Text>
+              <Text style={textTitle}>Média das avaliações do prestador:</Text>
               <Text style={text}>
-                {ongoing?.provider?.ratings?.providerRating}
+                {ongoing?.provider?.ratings?.providerRating ??
+                  'Não possui avaliações'}
               </Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
-              <Text style={textTitle}>Avaliações dos serviços:</Text>
+              <Text style={textTitle}>Média das avaliações dos serviços:</Text>
               <Text style={text}>
-                {ongoing?.provider?.ratings?.serviceRating}
+                {ongoing?.provider?.ratings?.serviceRating ??
+                  'Não possui avaliações'}
               </Text>
             </View>
 
