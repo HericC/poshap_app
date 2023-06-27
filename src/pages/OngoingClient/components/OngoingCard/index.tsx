@@ -11,6 +11,7 @@ import api from '../../../../services/api';
 import { LoadingContext } from '../../../../contexts/LoadingContext';
 import { OngoingDto } from './dto';
 import { CancellationScoreDto } from '../../../Profile/dto';
+import { formatRatings } from '../../../../utils/Functions';
 
 import RatingCard from '../../../../components/RatingCard';
 
@@ -148,16 +149,14 @@ export default function OngoingCard({
             <View style={[texts, { marginBottom: 10 }]}>
               <Text style={textTitle}>Média das avaliações do prestador:</Text>
               <Text style={text}>
-                {ongoing?.provider?.ratings?.providerRating ??
-                  'Não possui avaliações'}
+                {formatRatings(ongoing?.provider?.ratings?.providerRating)}
               </Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
               <Text style={textTitle}>Média das avaliações dos serviços:</Text>
               <Text style={text}>
-                {ongoing?.provider?.ratings?.serviceRating ??
-                  'Não possui avaliações'}
+                {formatRatings(ongoing?.provider?.ratings?.serviceRating)}
               </Text>
             </View>
 

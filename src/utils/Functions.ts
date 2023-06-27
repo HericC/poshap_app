@@ -18,3 +18,7 @@ export function checkTokenExpired(token: string): boolean {
   const decoded = decodeToken(token);
   return Date.now() > decoded.exp * 1000;
 }
+
+export function formatRatings(rating: number | null): string {
+  return rating ? `${rating}/5 estrelas` : 'Não possui avaliações';
+}

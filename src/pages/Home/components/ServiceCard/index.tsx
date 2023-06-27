@@ -15,6 +15,7 @@ import api from '../../../../services/api';
 import { LoadingContext } from '../../../../contexts/LoadingContext';
 import { OrderDto, ServiceDto } from './dto';
 import { CancellationScoreDto } from '../../../Profile/dto';
+import { formatRatings } from '../../../../utils/Functions';
 
 import RadioButton from '../../../../components/RadioButton';
 
@@ -155,16 +156,14 @@ export default function ServiceCard({ serviceId, setServiceId }: any) {
             <View style={[texts, { marginBottom: 10 }]}>
               <Text style={textTitle}>Média das avaliações do prestador:</Text>
               <Text style={text}>
-                {service?.provider?.ratings?.providerRating ??
-                  'Não possui avaliações'}
+                {formatRatings(service?.provider?.ratings?.providerRating)}
               </Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
               <Text style={textTitle}>Média das avaliações dos serviços:</Text>
               <Text style={text}>
-                {service?.provider?.ratings?.serviceRating ??
-                  'Não possui avaliações'}
+                {formatRatings(service?.provider?.ratings?.serviceRating)}
               </Text>
             </View>
 

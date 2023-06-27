@@ -11,6 +11,7 @@ import api from '../../../../services/api';
 import { LoadingContext } from '../../../../contexts/LoadingContext';
 import { OrderDto } from './dto';
 import { CancellationScoreDto } from '../../../Profile/dto';
+import { formatRatings } from '../../../../utils/Functions';
 
 import globalStyles from '../../../../styles';
 const {
@@ -127,16 +128,14 @@ export default function OrderCard({ orderId, setOrderId, getOrders }: any) {
             <View style={[texts, { marginBottom: 10 }]}>
               <Text style={textTitle}>Média das avaliações do prestador:</Text>
               <Text style={text}>
-                {order?.provider?.ratings?.providerRating ??
-                  'Não possui avaliações'}
+                {formatRatings(order?.provider?.ratings?.providerRating)}
               </Text>
             </View>
 
             <View style={[texts, { marginBottom: 10 }]}>
               <Text style={textTitle}>Média das avaliações dos serviços:</Text>
               <Text style={text}>
-                {order?.provider?.ratings?.serviceRating ??
-                  'Não possui avaliações'}
+                {formatRatings(order?.provider?.ratings?.serviceRating)}
               </Text>
             </View>
 
