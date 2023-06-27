@@ -12,6 +12,8 @@ import { LoadingContext } from '../../../../contexts/LoadingContext';
 import { OngoingDto } from './dto';
 import { CancellationScoreDto } from '../../../Profile/dto';
 
+import RatingCard from '../../../../components/RatingCard';
+
 import globalStyles from '../../../../styles';
 const {
   texts,
@@ -39,6 +41,7 @@ export default function OngoingCard({
 
   const [ongoing, setOngoing] = useState({} as OngoingDto);
   const [cancellationScore, setCancellationScore] = useState(0);
+  const [showRatingCard, setShowRatingCard] = useState(false);
 
   useEffect(() => {
     if (ongoingId) getOngoingById();
@@ -184,11 +187,28 @@ export default function OngoingCard({
                 </TouchableOpacity>
               )}
 
+              {(status === 'finished' || status === 'canceled') && (
+                <TouchableOpacity
+                  style={btn}
+                  onPress={() => setShowRatingCard(true)}
+                >
+                  <Text style={btnText}>Avaliar</Text>
+                </TouchableOpacity>
+              )}
+
               <TouchableOpacity style={[btn, btnSecondary]} onPress={close}>
                 <Text style={[btnText, btnTextSecondary]}>Fechar</Text>
               </TouchableOpacity>
             </View>
           </View>
+
+          <RatingCard
+            userId={ongoing?.providerId}
+            label="provedor"
+            path="provider"
+            showRatingCard={showRatingCard}
+            setShowRatingCard={setShowRatingCard}
+          />
         </View>
       </ScrollView>
     </Modal>
