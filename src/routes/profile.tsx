@@ -5,6 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 import Profile from '../pages/Profile';
 import Plans from '../pages/Plans';
+import Payments from '../pages/Payments';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,6 +30,12 @@ export default function ProfileRoutes() {
         name="plans"
         component={Plans}
         options={{ title: 'Planos' }}
+      />
+
+      <Drawer.Screen
+        name="payments"
+        component={Payments}
+        options={{ title: 'Pagamentos' }}
       />
 
       <Drawer.Screen
