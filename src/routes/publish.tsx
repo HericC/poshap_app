@@ -2,6 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import NewPublish from '../pages/NewPublish';
+import Publications from '../pages/Publications';
 import OrderProvider from '../pages/OrderProvider';
 import OngoingProvider from '../pages/OngoingProvider';
 
@@ -20,6 +21,12 @@ export default function PublishRoutes() {
         name="new-service"
         component={NewPublish}
         options={{ title: 'Nova publicação' }}
+      />
+
+      <Drawer.Screen
+        name="service"
+        component={Publications}
+        options={{ title: 'Minhas publicações' }}
       />
 
       <Drawer.Screen
