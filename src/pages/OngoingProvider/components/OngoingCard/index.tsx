@@ -14,6 +14,7 @@ import { CancellationScoreDto } from '../../../Profile/dto';
 import { formatRatings } from '../../../../utils/Functions';
 
 import RatingCard from '../../../../components/RatingCard';
+import AccusationCard from '../../../../components/AccusationCard';
 
 import globalStyles from '../../../../styles';
 const {
@@ -43,6 +44,7 @@ export default function OngoingCard({
   const [ongoing, setOngoing] = useState({} as OngoingDto);
   const [cancellationScore, setCancellationScore] = useState(0);
   const [showRatingCard, setShowRatingCard] = useState(false);
+  const [showAccusationCard, setShowAccusationCard] = useState(false);
 
   useEffect(() => {
     if (ongoingId) getOngoingById();
@@ -190,16 +192,25 @@ export default function OngoingCard({
               </View>
             )}
 
-            <View style={[btns, { marginTop: 10 }]}>
-              {(status === 'finished' || status === 'canceled') && (
+            {(status === 'finished' || status === 'canceled') && (
+              <View style={[btns, { marginTop: 10 }]}>
                 <TouchableOpacity
                   style={btn}
                   onPress={() => setShowRatingCard(true)}
                 >
                   <Text style={btnText}>Avaliar</Text>
                 </TouchableOpacity>
-              )}
 
+                <TouchableOpacity
+                  style={[btn, btnDangerColor]}
+                  onPress={() => setShowAccusationCard(true)}
+                >
+                  <Text style={btnText}>Denunciar</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <View style={[btns, { marginTop: 10 }]}>
               <TouchableOpacity style={[btn, btnSecondary]} onPress={close}>
                 <Text style={[btnText, btnTextSecondary]}>Fechar</Text>
               </TouchableOpacity>
@@ -212,6 +223,13 @@ export default function OngoingCard({
             path="client"
             showRatingCard={showRatingCard}
             setShowRatingCard={setShowRatingCard}
+          />
+
+          <AccusationCard
+            accusedId={ongoing?.clientId}
+            label="cliente"
+            showRatingCard={showAccusationCard}
+            setShowRatingCard={setShowAccusationCard}
           />
         </View>
       </ScrollView>
