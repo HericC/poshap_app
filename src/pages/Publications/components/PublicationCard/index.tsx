@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   Text,
   View,
@@ -33,6 +34,8 @@ export default function PublicationCard({
   setPublicationId,
   getPublications,
 }: any) {
+  const navigation = useNavigation();
+
   const { handleLoading } = useContext(LoadingContext);
 
   const [publication, setPublication] = useState({} as PublicationDto);
@@ -67,6 +70,13 @@ export default function PublicationCard({
     } finally {
       // handleLoading(false);
     }
+  };
+
+  const toPublish = () => {
+    navigation.navigate({
+      name: 'new-service',
+      params: { publication },
+    } as never);
   };
 
   const close = () => {
@@ -109,13 +119,13 @@ export default function PublicationCard({
             </View>
 
             <View style={[btns, { marginTop: 10 }]}>
-              <TouchableOpacity style={btn} onPress={() => {}}>
+              <TouchableOpacity style={btn} onPress={toPublish}>
                 <Text style={btnText}>Editar</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[btn, btnDangerColor]}
-                onPress={() => handleSubmit()}
+                onPress={handleSubmit}
               >
                 <Text style={btnText}>Remover</Text>
               </TouchableOpacity>

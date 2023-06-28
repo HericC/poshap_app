@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
 import { AuthContext } from '../../contexts/AuthContext';
-import { PublishDto } from './dto';
+import { PublicationDto, PublishDto } from './dto';
 
 import MainView from '../../components/MainView';
 import RadioButton from '../../components/RadioButton';
@@ -15,10 +15,12 @@ const { inputs, input, btns, btn, btnText } = globalStyles;
 
 export default function NewPublish() {
   const navigation = useNavigation();
+  const route: any = useRoute();
 
   const { handleLoading } = useContext(LoadingContext);
   const { authUser } = useContext(AuthContext);
 
+  const [publication, setPublication] = useState({} as PublicationDto);
   const [newCategory, setNewCategory] = useState(false);
   const [categories, setCategories] = useState([] as string[]);
   const [category, setCategory] = useState('');
@@ -28,7 +30,9 @@ export default function NewPublish() {
   const [priority, setPriority] = useState(false);
 
   useEffect(() => {
+    setPriority(!editPriority());
     getCategories();
+    fillPublish();
   }, []);
 
   const getCategories = async () => {
@@ -46,24 +50,54 @@ export default function NewPublish() {
   const handleSubmit = async () => {
     const _price = +price.replace(',', '.');
 
-    const payload: PublishDto = {
+    let payload: PublishDto | PublicationDto = {
       category,
       price: _price,
       description,
       scheduling,
       priority,
     };
+    if (publication?.id) payload = checkChange(payload);
 
     try {
       // handleLoading(true);
-      await api.post('services', payload);
-      Alert.alert('', 'Publicação realizada');
-      navigation.navigate('home-routes' as never);
+      if (publication?.id) {
+        await api.put(`services/${publication?.id}`, payload);
+        Alert.alert('', 'Publicação editada');
+        navigation.navigate('service' as never);
+      } else {
+        await api.post('services', payload);
+        Alert.alert('', 'Publicação realizada');
+        navigation.navigate('home-routes' as never);
+      }
     } catch (error) {
       console.warn(error);
     } finally {
       // handleLoading(false);
     }
+  };
+
+  const fillPublish = () => {
+    const publication: PublicationDto = route.params?.publication;
+    if (!publication) return;
+    setPublication(publication);
+
+    if (publication?.category) setCategory(publication?.category);
+    if (publication?.price) setPrice(`${publication?.price}`);
+    if (publication?.description) setDescription(publication?.description);
+    if (publication?.scheduling) setScheduling(publication?.scheduling);
+    if (publication?.priority) setPriority(publication?.priority);
+  };
+
+  const checkChange = (payload: PublicationDto) => {
+    if (payload.category === publication?.category) delete payload.category;
+    if (payload.price === publication?.price) delete payload.price;
+    if (payload.description === publication?.description)
+      delete payload.description;
+    if (payload.scheduling === publication?.scheduling)
+      delete payload.scheduling;
+    if (payload.priority === publication?.priority) delete payload.priority;
+    return payload;
   };
 
   const editScheduling = () => {
@@ -145,7 +179,7 @@ export default function NewPublish() {
 
         <RadioButton
           small={true}
-          active={priority || !editPriority()}
+          active={priority}
           callback={() => {
             if (!editPriority())
               Alert.alert(
@@ -162,7 +196,7 @@ export default function NewPublish() {
 
       <View style={btns}>
         <TouchableOpacity style={btn} onPress={handleSubmit}>
-          <Text style={btnText}>Publicar</Text>
+          <Text style={btnText}>{publication?.id ? 'Editar' : 'Publicar'}</Text>
         </TouchableOpacity>
       </View>
     </MainView>
