@@ -3,19 +3,29 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import { EditDto, RegisterDto, UserDto } from './dto';
 
 import MainView from '../../components/MainView';
 
 import globalStyles from '../../styles';
-const { inputs, input, btns, btn, btnText, btnSecondary, btnTextSecondary } =
-  globalStyles;
+const {
+  inputs,
+  input,
+  btns,
+  btn,
+  btnText,
+  btnSecondary,
+  btnTextSecondary,
+  btnDangerColor,
+} = globalStyles;
 
 export default function Register() {
   const navigation = useNavigation();
   const route: any = useRoute();
 
   const { handleLoading } = useContext(LoadingContext);
+  const { handleLogout } = useContext(AuthContext);
 
   const [user, setUser] = useState({} as UserDto);
   const [name, setName] = useState('');
@@ -89,6 +99,19 @@ export default function Register() {
 
   const toBack = () => {
     navigation.goBack();
+  };
+
+  const toDelete = async () => {
+    try {
+      // handleLoading(true);
+      await api.delete('users');
+      handleLogout();
+      Alert.alert('', 'Conta excluída');
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      // handleLoading(false);
+    }
   };
 
   return (
@@ -198,6 +221,12 @@ export default function Register() {
             {route.params?.edit ? 'Editar' : 'Cadastrar'}
           </Text>
         </TouchableOpacity>
+
+        {route.params?.edit && (
+          <TouchableOpacity style={[btn, btnDangerColor]} onPress={toDelete}>
+            <Text style={btnText}>Excluir</Text>
+          </TouchableOpacity>
+        )}
 
         {!route.params?.edit && (
           <TouchableOpacity style={[btn, btnSecondary]} onPress={toBack}>
