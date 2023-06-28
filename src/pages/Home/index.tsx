@@ -44,7 +44,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    getServices();
+    if (Object.keys(filterPayload).length) getServices();
   }, [filterPayload]);
 
   const getCategories = async () => {
@@ -75,22 +75,22 @@ export default function Home() {
 
   return (
     <SafeAreaView style={safeAreaView}>
+      <TouchableOpacity
+        style={[link, { marginVertical: 6 }]}
+        onPress={() => setShowFilter(!showFilter)}
+      >
+        <Text style={[linkText, { fontSize: 20 }]}>Filtros</Text>
+      </TouchableOpacity>
+
+      <Filter
+        showFilter={showFilter}
+        setShowFilter={setShowFilter}
+        categories={categories}
+        setFilterPayload={setFilterPayload}
+      />
+
       {services.length ? (
         <>
-          <TouchableOpacity
-            style={[link, { marginVertical: 6 }]}
-            onPress={() => setShowFilter(!showFilter)}
-          >
-            <Text style={[linkText, { fontSize: 20 }]}>Filtros</Text>
-          </TouchableOpacity>
-
-          <Filter
-            showFilter={showFilter}
-            setShowFilter={setShowFilter}
-            categories={categories}
-            setFilterPayload={setFilterPayload}
-          />
-
           <FlatList
             data={services}
             renderItem={({ item }) => (

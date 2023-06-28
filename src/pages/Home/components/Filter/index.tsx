@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import MultiSelect from 'react-native-multiple-select';
 import { Text, View, TouchableOpacity, TextInput, Modal } from 'react-native';
+import api from '../../../../services/api';
+import { LoadingContext } from '../../../../contexts/LoadingContext';
+import { MinAndMaxPrices } from './dto';
 
 import globalStyles from '../../../../styles';
 const {
@@ -22,14 +25,19 @@ export default function Filter({
   categories,
   setFilterPayload,
 }: any) {
+  const { handleLoading } = useContext(LoadingContext);
+
   const [searchEditing, setSearchEditing] = useState('');
   const [search, setSearch] = useState('');
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(300);
+  const [maxPrice, setMaxPrice] = useState(10000);
+  const [minSlider, setMinSlider] = useState(0);
+  const [maxSlider, setMaxSlider] = useState(10000);
   const [selectedCategories, setSelectedCategories] = useState([] as string[]);
 
   useEffect(() => {
     setPayload();
+    getMinAndMaxPrices();
   }, [search, selectedCategories]);
 
   const setPayload = async () => {
@@ -41,6 +49,22 @@ export default function Filter({
     };
 
     setFilterPayload(payload);
+  };
+
+  const getMinAndMaxPrices = async () => {
+    try {
+      // handleLoading(true);
+      const { data }: { data: MinAndMaxPrices } = await api.get(
+        'services/min-and-max-prices',
+      );
+      setMinPrice(data.minPrice);
+      setMaxPrice(data.maxPrice);
+      setMinSlider(data.minPrice);
+      setMaxSlider(data.maxPrice);
+    } catch (error) {
+      console.warn(error);
+      // handleLoading(false);
+    }
   };
 
   return (
@@ -87,7 +111,8 @@ export default function Filter({
                 <View>
                   <MultiSlider
                     values={[minPrice, maxPrice]}
-                    max={300}
+                    min={minSlider}
+                    max={maxSlider}
                     sliderLength={180}
                     onValuesChange={(value) => {
                       setMinPrice(value[0]);
