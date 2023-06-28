@@ -24,6 +24,7 @@ const {
   btnText,
   btnSecondary,
   btnTextSecondary,
+  btnDangerColor,
   title,
 } = globalStyles;
 
@@ -38,6 +39,18 @@ export default function PaymentCard({ paymentId, setPaymentId }: any) {
   useEffect(() => {
     if (paymentId) getPayment();
   }, [paymentId]);
+
+  const handleSubmit = async () => {
+    try {
+      // handleLoading(true);
+      await api.post(`users/sandbox-pay/${paymentId}`);
+      Alert.alert('Processando pagamento', 'Aguarde...');
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      // handleLoading(false);
+    }
+  };
 
   const getPayment = async () => {
     try {
@@ -148,6 +161,15 @@ export default function PaymentCard({ paymentId, setPaymentId }: any) {
             </View>
 
             <View style={[btns, { marginTop: 10 }]}>
+              {payment.status === 'PENDING' && (
+                <TouchableOpacity
+                  style={[btn, btnDangerColor]}
+                  onPress={handleSubmit}
+                >
+                  <Text style={btnText}>Pagar</Text>
+                </TouchableOpacity>
+              )}
+
               <TouchableOpacity style={[btn, btnSecondary]} onPress={close}>
                 <Text style={[btnText, btnTextSecondary]}>Fechar</Text>
               </TouchableOpacity>

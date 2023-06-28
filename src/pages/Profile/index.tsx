@@ -88,7 +88,7 @@ export default function Profile() {
 
       <View style={texts}>
         <Text style={textTitle}>Carteira:</Text>
-        <Text style={text}>{profile?.wallet}</Text>
+        <Text style={text}>R$ {profile?.wallet}</Text>
       </View>
 
       <View style={texts}>

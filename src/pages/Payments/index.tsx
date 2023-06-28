@@ -80,7 +80,7 @@ export default function Payments() {
           <View style={header}>
             <View style={[texts, textWallet]}>
               <Text style={textTitle}>Carteira:</Text>
-              <Text style={text}>{profile?.wallet}</Text>
+              <Text style={text}>R$ {profile?.wallet}</Text>
             </View>
 
             <View style={[btns, btnDeposit]}>
