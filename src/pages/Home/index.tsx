@@ -34,7 +34,6 @@ export default function Home() {
   const { handleLoading } = useContext(LoadingContext);
 
   const [services, setServices] = useState([] as ServicesDto[]);
-  const [categories, setCategories] = useState([] as string[]);
 
   const [showFilter, setShowFilter] = useState(false);
   const [filterPayload, setFilterPayload] = useState({} as FilterDto);
@@ -44,24 +43,8 @@ export default function Home() {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    getCategories();
-  }, []);
-
-  useEffect(() => {
     if (Object.keys(filterPayload).length) getServices();
   }, [filterPayload]);
-
-  const getCategories = async () => {
-    try {
-      // handleLoading(true);
-      const { data }: { data: string[] } = await api.get('services/categories');
-      setCategories(data);
-    } catch (error) {
-      console.warn(error);
-    } finally {
-      // handleLoading(false);
-    }
-  };
 
   const getServices = async () => {
     try {
@@ -95,7 +78,6 @@ export default function Home() {
       <Filter
         showFilter={showFilter}
         setShowFilter={setShowFilter}
-        categories={categories}
         setFilterPayload={setFilterPayload}
       />
 

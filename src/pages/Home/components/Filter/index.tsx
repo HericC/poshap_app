@@ -24,11 +24,11 @@ const {
 export default function Filter({
   showFilter,
   setShowFilter,
-  categories,
   setFilterPayload,
 }: any) {
   const { handleLoading } = useContext(LoadingContext);
 
+  const [categories, setCategories] = useState([] as string[]);
   const [searchEditing, setSearchEditing] = useState('');
   const [search, setSearch] = useState('');
   const [minPrice, setMinPrice] = useState(0);
@@ -39,6 +39,7 @@ export default function Filter({
   const [selectedCategories, setSelectedCategories] = useState([] as string[]);
 
   useEffect(() => {
+    getCategories();
     getMinAndMaxPrices();
   }, []);
 
@@ -56,6 +57,18 @@ export default function Filter({
     };
 
     setFilterPayload(payload);
+  };
+
+  const getCategories = async () => {
+    try {
+      // handleLoading(true);
+      const { data }: { data: string[] } = await api.get('services/categories');
+      setCategories(data);
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      // handleLoading(false);
+    }
   };
 
   const getMinAndMaxPrices = async () => {
