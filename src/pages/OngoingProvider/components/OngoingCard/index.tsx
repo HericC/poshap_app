@@ -228,8 +228,8 @@ export default function OngoingCard({
           <AccusationCard
             accusedId={ongoing?.clientId}
             label="cliente"
-            showRatingCard={showAccusationCard}
-            setShowRatingCard={setShowAccusationCard}
+            showAccusationCard={showAccusationCard}
+            setShowAccusationCard={setShowAccusationCard}
           />
         </View>
       </ScrollView>

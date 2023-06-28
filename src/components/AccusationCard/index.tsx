@@ -30,8 +30,8 @@ const { scrollModal, modal, container } = styles;
 export default function AccusationCard({
   accusedId,
   label,
-  showRatingCard,
-  setShowRatingCard,
+  showAccusationCard,
+  setShowAccusationCard,
 }: any) {
   const { handleLoading } = useContext(LoadingContext);
 
@@ -58,13 +58,13 @@ export default function AccusationCard({
   };
 
   const close = () => {
-    setShowRatingCard(false);
+    setShowAccusationCard(false);
     setAtitle('');
     setDescription('');
   };
 
   return (
-    <Modal animationType="fade" visible={showRatingCard} transparent={true}>
+    <Modal animationType="fade" visible={showAccusationCard} transparent={true}>
       <ScrollView style={scrollModal}>
         <View style={modal}>
           <View style={container}>
