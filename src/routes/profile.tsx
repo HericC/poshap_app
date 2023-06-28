@@ -4,6 +4,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 
 import Profile from '../pages/Profile';
+import Register from '../pages/Register';
 import Plans from '../pages/Plans';
 import Payments from '../pages/Payments';
 
@@ -24,6 +25,13 @@ export default function ProfileRoutes() {
         name="profile"
         component={Profile}
         options={{ title: 'Perfil' }}
+      />
+
+      <Drawer.Screen
+        name="user-edit"
+        component={Register}
+        initialParams={{ edit: true }}
+        options={{ title: 'Minhas informações' }}
       />
 
       <Drawer.Screen

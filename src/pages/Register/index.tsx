@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
-import { RegisterDto } from './dto';
+import { EditDto, RegisterDto, UserDto } from './dto';
 
 import MainView from '../../components/MainView';
 
@@ -13,9 +13,11 @@ const { inputs, input, btns, btn, btnText, btnSecondary, btnTextSecondary } =
 
 export default function Register() {
   const navigation = useNavigation();
+  const route: any = useRoute();
 
   const { handleLoading } = useContext(LoadingContext);
 
+  const [user, setUser] = useState({} as UserDto);
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [phone, setPhone] = useState('');
@@ -23,8 +25,13 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
+  useEffect(() => {
+    if (!route.params?.edit) return;
+    getProfile();
+  }, []);
+
   const handleSubmit = async () => {
-    const payload: RegisterDto = {
+    let payload: RegisterDto | EditDto = {
       name,
       cpf,
       phone,
@@ -32,17 +39,52 @@ export default function Register() {
       password,
       repeatPassword,
     };
+    if (route.params?.edit) payload = checkChange(payload);
 
     try {
       handleLoading(true);
-      await api.post('users', payload);
-      Alert.alert('', 'Cadastro realizado');
-      toBack();
+      if (route.params?.edit) {
+        await api.put('users', payload);
+        Alert.alert('', 'Informações editada');
+      } else {
+        await api.post('users', payload);
+        Alert.alert('', 'Cadastro realizado');
+        toBack();
+      }
     } catch (error) {
       console.warn(error);
     } finally {
       handleLoading(false);
     }
+  };
+
+  const getProfile = async () => {
+    try {
+      // handleLoading(true);
+      const { data }: { data: UserDto } = await api.get('users');
+      setUser(data);
+      fillRegister(data);
+    } catch (error) {
+      console.warn(error);
+      // handleLoading(false);
+    }
+  };
+
+  const fillRegister = (data: UserDto) => {
+    if (data.name) setName(data.name);
+    if (data.cpf) setCpf(`${data.cpf}`);
+    if (data.phone) setPhone(data.phone);
+    if (data.email) setEmail(data.email);
+  };
+
+  const checkChange = (payload: EditDto) => {
+    if (payload.name === user?.name) delete payload.name;
+    if (payload.phone === user?.phone) delete payload.phone;
+    if (payload.email === user?.email) delete payload.email;
+    if (!payload.password) delete payload.password;
+    if (!payload.repeatPassword) delete payload.repeatPassword;
+    delete payload.cpf;
+    return payload;
   };
 
   const toBack = () => {
@@ -60,7 +102,7 @@ export default function Register() {
           onChangeText={(text) => setName(text)}
           onSubmitEditing={() => {
             // @ts-ignore
-            this.cpf.focus();
+            route.params?.edit ? this.phone.focus() : this.cpf.focus();
           }}
         />
 
@@ -71,6 +113,7 @@ export default function Register() {
           keyboardType="number-pad"
           value={cpf}
           onChangeText={(text) => setCpf(text)}
+          editable={!route.params?.edit}
           onSubmitEditing={() => {
             // @ts-ignore
             this.phone.focus();
@@ -151,12 +194,16 @@ export default function Register() {
 
       <View style={btns}>
         <TouchableOpacity style={btn} onPress={handleSubmit}>
-          <Text style={btnText}>Cadastrar</Text>
+          <Text style={btnText}>
+            {route.params?.edit ? 'Editar' : 'Cadastrar'}
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[btn, btnSecondary]} onPress={toBack}>
-          <Text style={[btnText, btnTextSecondary]}>Voltar</Text>
-        </TouchableOpacity>
+        {!route.params?.edit && (
+          <TouchableOpacity style={[btn, btnSecondary]} onPress={toBack}>
+            <Text style={[btnText, btnTextSecondary]}>Voltar</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </MainView>
   );

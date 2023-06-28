@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useRoute } from '@react-navigation/native';
 import {
   Text,
   View,
@@ -19,8 +20,9 @@ const { list, listItem, listItemHeader, listItemTitle, listItemText, title } =
 import styles from '../Home/styles';
 const { safeAreaView } = styles;
 
-export default function OngoingClient({ route }: any) {
+export default function OngoingClient() {
   const { handleLoading } = useContext(LoadingContext);
+  const route: any = useRoute();
 
   const [ongoing, setOngoing] = useState([] as OngoingDto[]);
   const [ongoingCardId, setOngoingCardId] = useState('');
