@@ -9,6 +9,7 @@ import {
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
 import { ServicesDto } from './dto';
+import { FilterDto } from './components/Filter/dto';
 
 import Filter from './components/Filter';
 import ServiceCard from './components/ServiceCard';
@@ -35,7 +36,7 @@ export default function Home() {
   const [categories, setCategories] = useState([] as string[]);
 
   const [showFilter, setShowFilter] = useState(false);
-  const [filterPayload, setFilterPayload] = useState({});
+  const [filterPayload, setFilterPayload] = useState({} as FilterDto);
 
   const [serviceCardId, setServiceCardId] = useState('');
 

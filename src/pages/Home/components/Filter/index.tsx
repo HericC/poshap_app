@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import MultiSelect from 'react-native-multiple-select';
+import { AirbnbRating } from 'react-native-ratings';
 import { Text, View, TouchableOpacity, TextInput, Modal } from 'react-native';
 import api from '../../../../services/api';
 import { LoadingContext } from '../../../../contexts/LoadingContext';
-import { MinAndMaxPrices } from './dto';
+import { FilterDto, MinAndMaxPricesDto } from './dto';
 
 import globalStyles from '../../../../styles';
 const {
@@ -17,6 +18,7 @@ const {
   linkText,
   modalFilter,
   textTitle,
+  listItemTitle,
 } = globalStyles;
 
 export default function Filter({
@@ -33,19 +35,24 @@ export default function Filter({
   const [maxPrice, setMaxPrice] = useState(10000);
   const [minSlider, setMinSlider] = useState(0);
   const [maxSlider, setMaxSlider] = useState(10000);
+  const [rating, setRating] = useState(1);
   const [selectedCategories, setSelectedCategories] = useState([] as string[]);
 
   useEffect(() => {
-    setPayload();
     getMinAndMaxPrices();
-  }, [search, selectedCategories]);
+  }, []);
+
+  useEffect(() => {
+    setPayload();
+  }, [search, rating, selectedCategories]);
 
   const setPayload = async () => {
-    const payload: any = {
+    const payload: FilterDto = {
       search,
       minPrice: minPrice,
       maxPrice: maxPrice,
       categories: selectedCategories,
+      rating: rating,
     };
 
     setFilterPayload(payload);
@@ -54,7 +61,7 @@ export default function Filter({
   const getMinAndMaxPrices = async () => {
     try {
       // handleLoading(true);
-      const { data }: { data: MinAndMaxPrices } = await api.get(
+      const { data }: { data: MinAndMaxPricesDto } = await api.get(
         'services/min-and-max-prices',
       );
       setMinPrice(data.minPrice);
@@ -124,6 +131,18 @@ export default function Filter({
                   />
                 </View>
                 <Text style={listItemText}>{maxPrice}</Text>
+              </View>
+            </View>
+
+            <View style={inputs}>
+              <Text style={listItemTitle}>Avaliação</Text>
+
+              <View style={{ marginBottom: 10, marginTop: 5 }}>
+                <AirbnbRating
+                  defaultRating={rating}
+                  showRating={false}
+                  onFinishRating={setRating}
+                />
               </View>
             </View>
           </View>
