@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { RefreshControl, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Logo from '../Logo';
 
@@ -10,9 +10,23 @@ export default function MainView({
   children,
   showLogo = true,
   center = true,
+  refresh,
 }: any) {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    if (refresh) await refresh();
+    setRefreshing(false);
+  };
+
   return (
-    <ScrollView contentContainerStyle={[scrollContainer, center && centerView]}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      contentContainerStyle={[scrollContainer, center && centerView]}
+    >
       <SafeAreaView style={safeAreaView}>
         {showLogo && <Logo />}
         {children}

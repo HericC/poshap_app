@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
@@ -25,6 +26,8 @@ export default function Publications() {
   const [publications, setPublications] = useState([] as PublicationsDto[]);
   const [publicationCardId, setPublicationCardId] = useState('');
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     getPublications();
   }, []);
@@ -43,11 +46,20 @@ export default function Publications() {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getPublications();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={safeAreaView}>
       {publications.length ? (
         <>
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             data={publications}
             renderItem={({ item }) => (
               <View style={list}>

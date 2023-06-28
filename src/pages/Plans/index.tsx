@@ -69,7 +69,7 @@ export default function Plans() {
   };
 
   return (
-    <MainView showLogo={false} center={false}>
+    <MainView showLogo={false} center={false} refresh={getPlans}>
       <Text style={header}>
         Seu plano atual expira em:{' '}
         {new Date(authUser?.planDate ?? '').toLocaleDateString()}

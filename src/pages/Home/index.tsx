@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
@@ -40,6 +41,8 @@ export default function Home() {
 
   const [serviceCardId, setServiceCardId] = useState('');
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     getCategories();
   }, []);
@@ -74,6 +77,12 @@ export default function Home() {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getServices();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={safeAreaView}>
       <TouchableOpacity
@@ -93,6 +102,9 @@ export default function Home() {
       {services.length ? (
         <>
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             data={services}
             renderItem={({ item }) => (
               <View style={list}>

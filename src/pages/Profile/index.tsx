@@ -53,7 +53,7 @@ export default function Profile() {
   };
 
   return (
-    <MainView showLogo={false} center={false}>
+    <MainView showLogo={false} center={false} refresh={getProfile}>
       <View style={texts}>
         <Text style={textTitle}>Nome:</Text>
         <Text style={text}>{profile?.name}</Text>

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
@@ -45,6 +46,8 @@ export default function Payments() {
   const [paymentCardId, setPaymentCardId] = useState('');
   const [showDepositCard, setShowDepositCard] = useState(false);
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     getProfile();
     getPayments();
@@ -73,6 +76,12 @@ export default function Payments() {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await Promise.all([getProfile(), getPayments()]);
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={safeAreaView}>
       {payments.length ? (
@@ -94,6 +103,9 @@ export default function Payments() {
           </View>
 
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             data={payments}
             renderItem={({ item }) => (
               <View style={list}>

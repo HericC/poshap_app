@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
@@ -25,6 +26,8 @@ export default function OrderProvider() {
   const [orders, setOrders] = useState([] as OrdersDto[]);
   const [orderCardId, setOrderCardId] = useState('');
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     getOrders();
   }, []);
@@ -41,11 +44,20 @@ export default function OrderProvider() {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getOrders();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={safeAreaView}>
       {orders.length ? (
         <>
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             data={orders}
             renderItem={({ item }) => (
               <View style={list}>

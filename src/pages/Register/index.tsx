@@ -36,7 +36,6 @@ export default function Register() {
   const [repeatPassword, setRepeatPassword] = useState('');
 
   useEffect(() => {
-    if (!route.params?.edit) return;
     getProfile();
   }, []);
 
@@ -69,6 +68,8 @@ export default function Register() {
   };
 
   const getProfile = async () => {
+    if (!route.params?.edit) return;
+
     try {
       // handleLoading(true);
       const { data }: { data: UserDto } = await api.get('users');
@@ -115,7 +116,7 @@ export default function Register() {
   };
 
   return (
-    <MainView>
+    <MainView refresh={getProfile}>
       <View style={inputs}>
         <TextInput
           style={input}

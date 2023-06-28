@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import api from '../../services/api';
 import { LoadingContext } from '../../contexts/LoadingContext';
@@ -27,6 +28,8 @@ export default function OngoingProvider() {
   const [ongoing, setOngoing] = useState([] as OngoingDto[]);
   const [ongoingCardId, setOngoingCardId] = useState('');
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     getOngoing();
   }, []);
@@ -46,11 +49,20 @@ export default function OngoingProvider() {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getOngoing();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={safeAreaView}>
       {ongoing.length ? (
         <>
           <FlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             data={ongoing}
             renderItem={({ item }) => (
               <View style={list}>

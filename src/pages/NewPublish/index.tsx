@@ -109,7 +109,7 @@ export default function NewPublish() {
   };
 
   return (
-    <MainView>
+    <MainView refresh={getCategories}>
       <View style={inputs}>
         <RadioButton
           small={true}
