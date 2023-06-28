@@ -34,6 +34,7 @@ import homeStyles from '../Home/styles';
 const { safeAreaView } = homeStyles;
 
 import styles from './styles';
+import DepositCard from './components/DepositCard';
 const { header, textWallet, btnDeposit } = styles;
 
 export default function Payments() {
@@ -42,6 +43,7 @@ export default function Payments() {
   const [profile, setProfile] = useState({} as ProfileDto);
   const [payments, setPayments] = useState([] as PaymentsDto[]);
   const [paymentCardId, setPaymentCardId] = useState('');
+  const [showDepositCard, setShowDepositCard] = useState(false);
 
   useEffect(() => {
     getProfile();
@@ -84,7 +86,7 @@ export default function Payments() {
             <View style={[btns, btnDeposit]}>
               <TouchableOpacity
                 style={[btn, { height: 50, backgroundColor: 'green' }]}
-                onPress={() => {}}
+                onPress={() => setShowDepositCard(true)}
               >
                 <Text style={btnText}>Depositar</Text>
               </TouchableOpacity>
@@ -128,6 +130,12 @@ export default function Payments() {
           <PaymentCard
             paymentId={paymentCardId}
             setPaymentId={setPaymentCardId}
+            getPayments={getPayments}
+          />
+
+          <DepositCard
+            showDepositCard={showDepositCard}
+            setShowDepositCard={setShowDepositCard}
             getPayments={getPayments}
           />
         </>

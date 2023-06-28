@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 import {
   Text,
@@ -25,20 +24,13 @@ const {
   btnText,
   btnSecondary,
   btnTextSecondary,
-  btnDangerColor,
   title,
 } = globalStyles;
 
 import styles from './styles';
 const { scrollModal, modal, container } = styles;
 
-export default function PaymentCard({
-  paymentId,
-  setPaymentId,
-  getPayments,
-}: any) {
-  const navigation = useNavigation();
-
+export default function PaymentCard({ paymentId, setPaymentId }: any) {
   const { handleLoading } = useContext(LoadingContext);
 
   const [payment, setPayment] = useState({} as PaymentDto);

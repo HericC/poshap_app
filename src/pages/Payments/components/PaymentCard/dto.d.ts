@@ -15,8 +15,3 @@ export interface PaymentDto {
 export interface BarCodeDto {
   barCode: string;
 }
-
-export interface DepositDto {
-  value: number;
-  typePayment: string;
-}
