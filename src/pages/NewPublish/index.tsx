@@ -32,7 +32,6 @@ export default function NewPublish() {
   useEffect(() => {
     setPriority(!editPriority());
     getCategories();
-    fillPublish();
   }, []);
 
   const getCategories = async () => {
@@ -40,6 +39,7 @@ export default function NewPublish() {
       // handleLoading(true);
       const { data }: { data: string[] } = await api.get('services/categories');
       setCategories(data);
+      fillPublish();
     } catch (error) {
       console.warn(error);
     } finally {

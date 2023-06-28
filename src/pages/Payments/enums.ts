@@ -4,6 +4,7 @@ export enum PaymentAction {
 }
 
 export enum PaymentStatus {
+  WAITING = 'Pendente',
   PENDING = 'Pendente',
   RECEIVED = 'Pago',
   RECEIVED_IN_CASH = 'Pago',

@@ -84,24 +84,30 @@ export default function Payments() {
 
   return (
     <SafeAreaView style={safeAreaView}>
+      <View style={header}>
+        <View style={[texts, textWallet]}>
+          <Text style={textTitle}>Carteira:</Text>
+          <Text style={text}>R$ {profile?.wallet}</Text>
+        </View>
+
+        <View style={[btns, btnDeposit]}>
+          <TouchableOpacity
+            style={[btn, { height: 50, backgroundColor: 'green' }]}
+            onPress={() => setShowDepositCard(true)}
+          >
+            <Text style={btnText}>Depositar</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <DepositCard
+        showDepositCard={showDepositCard}
+        setShowDepositCard={setShowDepositCard}
+        getPayments={getPayments}
+      />
+
       {payments.length ? (
         <>
-          <View style={header}>
-            <View style={[texts, textWallet]}>
-              <Text style={textTitle}>Carteira:</Text>
-              <Text style={text}>R$ {profile?.wallet}</Text>
-            </View>
-
-            <View style={[btns, btnDeposit]}>
-              <TouchableOpacity
-                style={[btn, { height: 50, backgroundColor: 'green' }]}
-                onPress={() => setShowDepositCard(true)}
-              >
-                <Text style={btnText}>Depositar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
           <FlatList
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -142,12 +148,6 @@ export default function Payments() {
           <PaymentCard
             paymentId={paymentCardId}
             setPaymentId={setPaymentCardId}
-            getPayments={getPayments}
-          />
-
-          <DepositCard
-            showDepositCard={showDepositCard}
-            setShowDepositCard={setShowDepositCard}
             getPayments={getPayments}
           />
         </>
