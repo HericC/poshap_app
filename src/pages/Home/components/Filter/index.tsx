@@ -21,6 +21,9 @@ const {
   listItemTitle,
 } = globalStyles;
 
+import styles from './styles';
+const { styleListContainer, styleRowList } = styles;
+
 export default function Filter({
   showFilter,
   setShowFilter,
@@ -120,6 +123,9 @@ export default function Filter({
                 onSelectedItemsChange={setSelectedCategories}
                 hideSubmitButton={true}
                 hideTags={true}
+                fixedHeight={true}
+                styleListContainer={styleListContainer}
+                styleRowList={styleRowList}
               />
             </View>
 
@@ -134,6 +140,8 @@ export default function Filter({
                     min={minSlider}
                     max={maxSlider}
                     sliderLength={180}
+                    markerStyle={{ backgroundColor: '#295BA8' }}
+                    selectedStyle={{ backgroundColor: '#295BA8' }}
                     onValuesChange={(value) => {
                       setMinPrice(value[0]);
                       setMaxPrice(value[1]);
